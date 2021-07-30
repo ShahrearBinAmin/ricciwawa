@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
+import 'package:ricciwawa/screens/explanation/explanation.dart';
+import 'package:ricciwawa/screens/post/post_screen.dart';
 import 'package:ricciwawa/screens/quiz/quiz_screen.dart';
 import 'package:ricciwawa/screens/quiz_result/quiz_result.dart';
+import 'package:ricciwawa/screens/results/results_screen.dart';
+import 'package:ricciwawa/screens/statistics/statistics_screen.dart';
 import 'package:ricciwawa/theme/theme.dart';
 
 void main() {
@@ -15,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(fontFamily: "Montserrat"),
-      home: QuizResult(),
+      home: StatisticsScreen(),
     );
   }
 }
