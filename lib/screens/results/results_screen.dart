@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/data/models/question.dart';
+import 'package:ricciwawa/data/models/quiz.dart';
+import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
+import 'package:ricciwawa/screens/statistics/statistics_screen.dart';
 
-class ResultsScreen extends StatelessWidget {
+class ResultsScreen extends StatefulWidget {
   const ResultsScreen({Key? key}) : super(key: key);
+
+  @override
+  _ResultsScreenState createState() => _ResultsScreenState();
+}
+
+class _ResultsScreenState extends State<ResultsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    context.read<QuizInfoBloc>().add(GetQuizStat("1"));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +40,64 @@ class ResultsScreen extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Column(
-          children: [
-            QuestionOptionsResult(),
-            SizedBox(
-              height: 10,
-            ),
-            QuestionOptionsResult(),
-            SizedBox(
-              height: 10,
-            ),
-            QuestionOptionsResult()
-          ],
+        child: BlocConsumer<QuizInfoBloc, QuizInfoState>(
+          listener: (context, state) {
+            // TODO: implement listener
+          },
+          builder: (context, state) {
+            if (state is QuizInfoLoaded) {
+              return buildColumnWithData(state.quiz);
+            } else {
+              return Container(
+                width: 0,
+                height: 0,
+              );
+            }
+          },
         ),
       ),
     );
   }
+
+  // Column buildColumnWithData(Quiz quiz) {
+  //   return Column(
+  //     children: [
+  //       QuestionOptionsResult(),
+  //       SizedBox(
+  //         height: 10,
+  //       ),
+  //       QuestionOptionsResult(),
+  //       SizedBox(
+  //         height: 10,
+  //       ),
+  //       QuestionOptionsResult()
+  //     ],
+  //   );
+  // }
+
+  Widget buildColumnWithData(Quiz quiz) {
+    return ListView.separated(
+        itemCount: quiz.questions.length,
+        separatorBuilder: (_, index) => SizedBox(
+              height: 10,
+            ),
+        itemBuilder: (BuildContext context, int index) {
+          return QuestionOptionsResult(
+            question: quiz.questions[index],
+          );
+        });
+  }
 }
 
 class QuestionOptionsResult extends StatelessWidget {
-  const QuestionOptionsResult({
-    Key? key,
-  }) : super(key: key);
+  final Question question;
+  const QuestionOptionsResult({Key? key, required this.question})
+      : super(key: key);
+
+  void navigateStatScreen(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StatisticsScreen(question: question)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +112,7 @@ class QuestionOptionsResult extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "Q1. 李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉云的誰？",
+                  "Q${question.position}. ${question.questionText}",
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ),
@@ -81,34 +135,19 @@ class QuestionOptionsResult extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          ResultOptions(
-            id: "a",
-            optionName: "A",
-            correctOptionName: "A",
-            optionText: "爸爸",
-            percentage: 99.4,
-          ),
-          ResultOptions(
-            id: "a",
-            optionName: "B",
-            correctOptionName: "A",
-            optionText: "爸爸",
-            percentage: 10,
-          ),
-          ResultOptions(
-            id: "a",
-            optionName: "C",
-            correctOptionName: "A",
-            optionText: "爸爸",
-            percentage: 10,
-          ),
-          ResultOptions(
-            id: "a",
-            optionName: "D",
-            correctOptionName: "A",
-            optionText: "爸爸",
-            percentage: 10,
-          )
+          ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return ResultOptions(
+                    option: question.options[index],
+                    onPercentageClick: navigateStatScreen,
+                    correctOptionName: question.correctOptionName);
+              },
+              separatorBuilder: (BuildContext context, int index) => SizedBox(
+                    height: 5,
+                  ),
+              itemCount: question.options.length)
         ],
       ),
     );
@@ -116,18 +155,14 @@ class QuestionOptionsResult extends StatelessWidget {
 }
 
 class ResultOptions extends StatelessWidget {
-  final String id;
-  final String optionName;
-  final String optionText;
-  final double percentage;
+  final Option option;
   final String correctOptionName;
+  final Function onPercentageClick;
   const ResultOptions(
       {Key? key,
-      required this.id,
-      required this.optionName,
-      required this.optionText,
-      required this.percentage,
-      required this.correctOptionName})
+      required this.option,
+      required this.correctOptionName,
+      required this.onPercentageClick})
       : super(key: key);
 
   @override
@@ -137,10 +172,10 @@ class ResultOptions extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "${this.optionName}. ${this.optionText}",
+          "${this.option.optionName}. ${this.option.optionText}",
           style: TextStyle(color: Colors.white, fontSize: 15),
         ),
-        if (this.optionName == this.correctOptionName) ...[
+        if (this.option.optionName == this.correctOptionName) ...[
           SizedBox(
             width: 5,
           ),
@@ -151,9 +186,12 @@ class ResultOptions extends StatelessWidget {
           ),
         ],
         Spacer(),
-        Text(
-          "${this.percentage.round()}%",
-          style: TextStyle(color: Colors.white, fontSize: 15),
+        InkWell(
+          onTap: () => onPercentageClick(context),
+          child: Text(
+            "${this.option.optionStat.percentage.round()}%",
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
         )
       ],
     );

@@ -1,10 +1,10 @@
 import 'package:ricciwawa/data/models/question.dart';
 
 class Quiz {
-  final String quizId;
-  final String postId;
-  final String creatorId;
-  final List<Question> questions;
+  String quizId;
+  String postId;
+  String creatorId;
+  List<Question> questions;
 
   Quiz({
     required this.quizId,

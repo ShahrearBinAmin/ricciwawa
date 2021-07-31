@@ -1,8 +1,8 @@
 class User {
-  final String userId;
-  final String name;
-  final String email;
-  final String userPhoto;
+  String userId;
+  String name;
+  String email;
+  String userPhoto;
   User({
     required this.userId,
     required this.name,

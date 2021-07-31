@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/data/repositories/quiz_repository.dart';
+import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
 import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
 import 'package:ricciwawa/screens/explanation/explanation.dart';
 import 'package:ricciwawa/screens/post/post_screen.dart';
@@ -20,7 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(fontFamily: "Montserrat"),
-      home: StatisticsScreen(),
+      home: BlocProvider(
+        create: (context) => QuizInfoBloc(QuizInfoRepository()),
+        child: ResultsScreen(),
+      ),
     );
   }
 }
