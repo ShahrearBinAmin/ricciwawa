@@ -6,9 +6,14 @@ import 'components/custom_text_button.dart';
 import 'components/progress_bar.dart';
 import 'components/question_card.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
 
+  @override
+  _QuizScreenState createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,15 +49,13 @@ class QuizScreen extends StatelessWidget {
               Spacer(
                 flex: 4,
               ),
-
-              BottomButtons(),
+              // BottomButtons(),
               SizedBox(
                 height: 20,
-              )
-
-              // AnswerExplanation(
-              //   correctOrWrong: kGreenColor,
-              // ),
+              ),
+              AnswerExplanation(
+                correctOrWrong: kGreenColor,
+              ),
             ],
           ),
         )),
