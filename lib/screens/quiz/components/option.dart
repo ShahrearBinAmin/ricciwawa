@@ -7,12 +7,14 @@ class OptionUI extends StatefulWidget {
   Function onClick;
   String questionId;
   final bool isSelected;
+  final Status questionStatus;
   OptionUI(
       {Key? key,
       required this.option,
       required this.onClick,
       required this.questionId,
-      required this.isSelected})
+      required this.isSelected,
+      required this.questionStatus})
       : super(key: key);
 
   @override
@@ -24,9 +26,12 @@ class _OptionUIState extends State<OptionUI> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        this
-            .widget
-            .onClick(this.widget.option.optionName, this.widget.questionId);
+        if (widget.questionStatus == Status.CHECK_DISABLED ||
+            widget.questionStatus == Status.CHECK_ENABLED) {
+          this
+              .widget
+              .onClick(this.widget.option.optionName, this.widget.questionId);
+        }
       },
       child: Container(
         margin: EdgeInsets.only(top: kDefaultPadding),

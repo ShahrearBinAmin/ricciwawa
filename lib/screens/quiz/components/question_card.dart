@@ -8,11 +8,13 @@ class QuestionCard extends StatefulWidget {
   final Question question;
   final Function onOptionClick;
   final String selectedOptionName;
+  final Status questionStatus;
   const QuestionCard(
       {Key? key,
       required this.question,
       required this.onOptionClick,
-      required this.selectedOptionName})
+      required this.selectedOptionName,
+      required this.questionStatus})
       : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   option: this.widget.question.options[index],
                   questionId: this.widget.question.questionId,
                   onClick: this.widget.onOptionClick,
+                  questionStatus: this.widget.questionStatus,
                   isSelected: this.widget.question.options[index].optionName ==
                       this.widget.selectedOptionName,
                 );

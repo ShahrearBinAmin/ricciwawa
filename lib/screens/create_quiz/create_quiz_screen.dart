@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
-import 'package:ricciwawa/screens/explanation/explanation.dart';
+
+import 'components/input_option.dart';
 
 class CreateQuiz extends StatelessWidget {
   const CreateQuiz({Key? key}) : super(key: key);
@@ -254,77 +255,6 @@ class IconInCircle extends StatelessWidget {
       child: Icon(
         icon,
         color: Colors.white,
-      ),
-    );
-  }
-}
-
-class InputOption extends StatelessWidget {
-  final String optionId;
-  final String optionText;
-  bool correctOption;
-
-  InputOption(
-      {Key? key,
-      required this.optionId,
-      required this.optionText,
-      this.correctOption = false})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-      decoration: BoxDecoration(
-          color: correctOption ? kGreenColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-              color: correctOption ? kGreenColor : Colors.white, width: 2)),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2)),
-            child: InkWell(
-              child: Text(
-                optionId,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 15),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  hintText: optionText,
-                  border: InputBorder.none,
-                  suffixIcon: correctOption
-                      ? InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ExplanationScreen()));
-                          },
-                          child: Icon(
-                            Icons.help,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        )
-                      : null,
-                  hintStyle: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-            ),
-          )
-        ],
       ),
     );
   }

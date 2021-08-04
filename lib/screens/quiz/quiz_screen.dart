@@ -7,6 +7,7 @@ import 'package:ricciwawa/data/models/quiz.dart';
 import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
 import 'package:ricciwawa/screens/quiz_result/quiz_result.dart';
 
+import 'components/answer_explanation.dart';
 import 'components/custom_outlined_button.dart';
 import 'components/custom_text_button.dart';
 import 'components/progress_bar.dart';
@@ -91,17 +92,6 @@ class _QuizScreenState extends State<QuizScreen> {
     });
     _optionName = optionName;
     _questionId = questionId;
-
-    // Question question = _quiz.questions
-    //     .firstWhere((element) => element.questionId == questionId);
-    // if (question.correctOptionName == optionName) {
-    //   questionStatus = Status.CORRECT;
-
-    //   correctAnswers.add(questionId);
-    // } else {
-    //   questionStatus = Status.WRONG;
-    //   wrongAnswers.add(questionId);
-    // }
   }
 
   @override
@@ -161,6 +151,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             itemBuilder: (context, index) => QuestionCard(
                                 onOptionClick: optionClicked,
                                 selectedOptionName: _optionName,
+                                questionStatus: questionStatus,
                                 question: state.quiz.questions[index])),
                       ),
                     ),
@@ -191,18 +182,16 @@ class _QuizScreenState extends State<QuizScreen> {
                         correctOrWrong: kGreenColor,
                         onNext: onNext,
                         onPrevious: onPrevious,
+                        question: state.quiz.questions[_currentIndex],
                       ),
                     ] else if (questionStatus == Status.WRONG) ...[
                       AnswerExplanation(
                         correctOrWrong: kRedColor,
                         onNext: onNext,
                         onPrevious: onPrevious,
+                        question: state.quiz.questions[_currentIndex],
                       ),
                     ],
-
-                    // AnswerExplanation(
-                    //   correctOrWrong: kGreenColor,
-                    // ),
                   ],
                 ),
               )),
@@ -216,70 +205,6 @@ class _QuizScreenState extends State<QuizScreen> {
         },
       ),
     );
-  }
-}
-
-class AnswerExplanation extends StatelessWidget {
-  final Color correctOrWrong;
-  final Function onNext;
-  final Function onPrevious;
-  const AnswerExplanation(
-      {Key? key,
-      required this.correctOrWrong,
-      required this.onNext,
-      required this.onPrevious})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: kSecondaryColorLight,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-              kDefaultPadding / 2, kDefaultPadding / 2, kDefaultPadding / 2, 0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Answer:",
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
-                        color: correctOrWrong, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "兒子",
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
-                        color: correctOrWrong, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                "兒子 is correct because 李明 is 李蛋’s brother. If 李蛋’s mother is 劉雲 , then 李明 ‘s mother is 劉雲 too.",
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle1
-                    ?.copyWith(color: correctOrWrong),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              BottomButtons(
-                correctOrWrong: correctOrWrong,
-                onNext: onNext,
-                onPrevious: onPrevious,
-              ),
-              SizedBox(
-                height: 20,
-              )
-            ],
-          ),
-        ));
   }
 }
 
