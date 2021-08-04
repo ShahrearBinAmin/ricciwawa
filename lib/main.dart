@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: "Montserrat"),
       home: BlocProvider(
         create: (context) => QuizInfoBloc(QuizInfoRepository()),
-        child: QuizScreen(),
+        child: PostScreeen(),
       ),
     );
   }

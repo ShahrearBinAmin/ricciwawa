@@ -4,17 +4,19 @@ import 'package:ricciwawa/constants.dart';
 class CustomOutlinedButton extends StatelessWidget {
   final String buttonText;
   final EdgeInsets margin;
+  final Function onClick;
   const CustomOutlinedButton(
       {Key? key,
       required this.buttonText,
-      this.margin = const EdgeInsets.symmetric(horizontal: 10)})
+      this.margin = const EdgeInsets.symmetric(horizontal: 10),
+      required this.onClick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: () => onClick(),
         child: Container(
           margin: margin,
           alignment: Alignment.center,

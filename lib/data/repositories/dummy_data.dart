@@ -23,7 +23,7 @@ import 'package:ricciwawa/data/models/user.dart';
 Quiz quiz_with_stat =
     Quiz(quizId: "1", postId: "10", creatorId: "100", questions: [
   Question(
-      questionId: "500",
+      questionId: "499",
       questionText: "李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
       correctOptionId: "a",
       correctOptionName: "A",
@@ -105,7 +105,7 @@ Quiz quiz_with_stat =
       ]),
   Question(
       questionId: "500",
-      questionText: "李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
+      questionText: "2 李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
       correctOptionId: "a",
       correctOptionName: "A",
       explanation:
@@ -185,8 +185,8 @@ Quiz quiz_with_stat =
                 percentage: 0.0, answeredUsersCount: 0, answeredUsers: [])),
       ]),
   Question(
-      questionId: "500",
-      questionText: "李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
+      questionId: "5001",
+      questionText: "3 李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
       correctOptionId: "a",
       correctOptionName: "A",
       explanation:

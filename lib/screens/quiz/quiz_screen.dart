@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/data/models/answer_quiz.dart';
+import 'package:ricciwawa/data/models/question.dart';
+import 'package:ricciwawa/data/models/quiz.dart';
+import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
+import 'package:ricciwawa/screens/quiz_result/quiz_result.dart';
 
 import 'components/custom_outlined_button.dart';
 import 'components/custom_text_button.dart';
@@ -14,6 +20,71 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  double _currentPercentage = 0;
+  int _totalPage = 0;
+  int _currentIndex = 0;
+  PageController _pageController = new PageController(initialPage: 0);
+  late Quiz _quiz;
+  Status questionStatus = Status.NEUTRAL;
+  Set<String> correctAnswers = {};
+  Set<String> wrongAnswers = {};
+
+  @override
+  void initState() {
+    context.read<QuizInfoBloc>().add(GetQuizStat("1"));
+
+    super.initState();
+  }
+
+  void onNext() {
+    print(correctAnswers);
+    print(wrongAnswers);
+
+    if (this._currentIndex + 1 == this._totalPage) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => QuizResult(
+                answerInfo: AnswerInfo(
+                    percentage:
+                        ((correctAnswers.length / _quiz.questions.length) * 100)
+                            .round(),
+                    correct: correctAnswers.length,
+                    wrong: wrongAnswers.length),
+              )));
+      return;
+    }
+
+    setState(() {
+      questionStatus = Status.NEUTRAL;
+    });
+
+    this
+        ._pageController
+        .nextPage(duration: Duration(milliseconds: 250), curve: Curves.ease);
+  }
+
+  void onPrevious() {
+    this._pageController.previousPage(
+        duration: Duration(milliseconds: 250), curve: Curves.ease);
+  }
+
+  void optionClicked(String optionName, String questionId) {
+    Question question = _quiz.questions
+        .firstWhere((element) => element.questionId == questionId);
+    if (question.correctOptionName == optionName) {
+      setState(() {
+        questionStatus = Status.CORRECT;
+      });
+      correctAnswers.add(questionId);
+    } else {
+      setState(() {
+        setState(() {
+          questionStatus = Status.WRONG;
+        });
+      });
+      wrongAnswers.add(questionId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,41 +95,94 @@ class _QuizScreenState extends State<QuizScreen> {
         elevation: 0,
         actions: [],
       ),
-      body: Container(
-        decoration: BoxDecoration(color: kSecondaryColor),
-        width: double.infinity,
-        height: double.infinity,
-        child: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0),
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-                child: ProgressBar(),
-              ),
-              Spacer(
-                flex: 1,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-                child: QuestionCard(),
-              ),
-              Spacer(
-                flex: 4,
-              ),
-              // BottomButtons(),
-              SizedBox(
-                height: 20,
-              ),
-              AnswerExplanation(
-                correctOrWrong: kGreenColor,
-              ),
-            ],
-          ),
-        )),
+      body: BlocConsumer<QuizInfoBloc, QuizInfoState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is QuizInfoLoaded) {
+            _totalPage = state.quiz.questions.length;
+            _quiz = state.quiz;
+            return Container(
+              decoration: BoxDecoration(color: kSecondaryColor),
+              width: double.infinity,
+              height: double.infinity,
+              child: SafeArea(
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultPadding / 2),
+                      child: ProgressBar(
+                        percentage: this._currentPercentage == 0
+                            ? (1 / state.quiz.questions.length)
+                            : this._currentPercentage,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding / 2),
+                        child: PageView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            controller: _pageController,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentPercentage =
+                                    (index + 1) / state.quiz.questions.length;
+                                _currentIndex = index;
+                              });
+                            },
+                            itemCount: state.quiz.questions.length,
+                            itemBuilder: (context, index) => QuestionCard(
+                                onOptionClick: optionClicked,
+                                question: state.quiz.questions[index])),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (questionStatus == Status.NEUTRAL) ...[
+                      BottomButtons(
+                        onNext: onNext,
+                        onPrevious: onPrevious,
+                      ),
+                    ] else if (questionStatus == Status.CORRECT) ...[
+                      AnswerExplanation(
+                        correctOrWrong: kGreenColor,
+                        onNext: onNext,
+                        onPrevious: onPrevious,
+                      ),
+                    ] else if (questionStatus == Status.WRONG) ...[
+                      AnswerExplanation(
+                        correctOrWrong: kRedColor,
+                        onNext: onNext,
+                        onPrevious: onPrevious,
+                      ),
+                    ],
+
+                    SizedBox(
+                      height: 20,
+                    ),
+                    // AnswerExplanation(
+                    //   correctOrWrong: kGreenColor,
+                    // ),
+                  ],
+                ),
+              )),
+            );
+          } else {
+            return Container(
+              height: 0,
+              width: 0,
+            );
+          }
+        },
       ),
     );
   }
@@ -66,7 +190,13 @@ class _QuizScreenState extends State<QuizScreen> {
 
 class AnswerExplanation extends StatelessWidget {
   final Color correctOrWrong;
-  const AnswerExplanation({Key? key, required this.correctOrWrong})
+  final Function onNext;
+  final Function onPrevious;
+  const AnswerExplanation(
+      {Key? key,
+      required this.correctOrWrong,
+      required this.onNext,
+      required this.onPrevious})
       : super(key: key);
 
   @override
@@ -108,7 +238,11 @@ class AnswerExplanation extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              BottomButtons(correctOrWrong: correctOrWrong),
+              BottomButtons(
+                correctOrWrong: correctOrWrong,
+                onNext: onNext,
+                onPrevious: onPrevious,
+              ),
               SizedBox(
                 height: 20,
               )
@@ -120,10 +254,14 @@ class AnswerExplanation extends StatelessWidget {
 
 class BottomButtons extends StatelessWidget {
   final Color? correctOrWrong;
-  const BottomButtons({
-    Key? key,
-    this.correctOrWrong,
-  }) : super(key: key);
+  final Function onNext;
+  final Function onPrevious;
+  const BottomButtons(
+      {Key? key,
+      this.correctOrWrong,
+      required this.onNext,
+      required this.onPrevious})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +269,11 @@ class BottomButtons extends StatelessWidget {
       children: [
         CustomOutlinedButton(
           buttonText: "Previous",
+          onClick: onPrevious,
         ),
         CustomTextButton(
           buttonText: "Next",
+          onClick: onNext,
           backgroundColor: correctOrWrong ?? kGrayBorderColor,
         ),
       ],

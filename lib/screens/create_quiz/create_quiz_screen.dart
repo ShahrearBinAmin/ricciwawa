@@ -35,10 +35,10 @@ class CreateQuiz extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
             Container(
-              height: 300,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                   color: kDarkGrey, borderRadius: BorderRadius.circular(12)),
@@ -80,14 +80,14 @@ class CreateQuiz extends StatelessWidget {
                     child: Column(
                       children: [
                         InputOption(
-                          optionId: "A",
+                          optionId: " ",
                           optionText: "Option 1",
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         InputOption(
-                          optionId: "B",
+                          optionId: " ",
                           optionText: "Option 2",
                         )
                       ],
@@ -96,10 +96,17 @@ class CreateQuiz extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.add_circle_outline,
-              color: Colors.white,
-              size: 35,
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.add_circle_outline,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ],
             ),
           ],
         ),

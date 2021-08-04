@@ -20,13 +20,15 @@ class QuizInfoBloc extends Bloc<QuizInfoEvent, QuizInfoState> {
     if (event is GetQuizInfo) {
       yield QuizInfoLoading();
       final quizInfo = await _quizInfoRepository.fetchQuiz(event.quizId);
-      yield QuizInfoLoaded(quizInfo);
+      yield QuizInfoLoaded(quiz: quizInfo, currentIndex: 0);
     } else if (event is GetQuizStat) {
       yield QuizInfoLoading();
 
       final quizInfoStat =
           await _quizInfoRepository.fetchQuizWithStat(event.quizId);
-      yield QuizInfoLoaded(quizInfoStat);
+      yield QuizInfoLoaded(quiz: quizInfoStat, currentIndex: 0);
+    } else if (event is GetCurrentIndex) {
+      yield CurrentQuiz(index: event.index);
     }
   }
 }

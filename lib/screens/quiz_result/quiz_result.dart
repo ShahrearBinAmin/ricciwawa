@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/data/models/answer_quiz.dart';
 
 class QuizResult extends StatelessWidget {
-  const QuizResult({Key? key}) : super(key: key);
+  final AnswerInfo answerInfo;
+  const QuizResult({Key? key, required this.answerInfo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class QuizResult extends StatelessWidget {
                   ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             Spacer(),
-            Text("88%",
+            Text("${answerInfo.percentage}%",
                 style: Theme.of(context).textTheme.headline2?.copyWith(
                     color: Colors.white, fontWeight: FontWeight.bold)),
             SizedBox(
@@ -58,7 +60,7 @@ class QuizResult extends StatelessWidget {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  "8 Correct",
+                  "${answerInfo.correct} Correct",
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1
@@ -79,7 +81,7 @@ class QuizResult extends StatelessWidget {
                     icon: Icons.close,
                   ),
                   SizedBox(width: 10),
-                  Text("1 to work on",
+                  Text("${answerInfo.wrong} to work on",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1

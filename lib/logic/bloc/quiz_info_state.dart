@@ -11,10 +11,9 @@ class QuizInfoLoading extends QuizInfoState {
 
 class QuizInfoLoaded extends QuizInfoState {
   final Quiz quiz;
+  final int currentIndex;
 
-  QuizInfoLoaded(
-    this.quiz,
-  );
+  QuizInfoLoaded({required this.quiz, required this.currentIndex});
 
   @override
   bool operator ==(Object other) {
@@ -26,3 +25,14 @@ class QuizInfoLoaded extends QuizInfoState {
   @override
   int get hashCode => quiz.hashCode;
 }
+
+class CurrentQuiz extends QuizInfoState {
+  final int index;
+  CurrentQuiz({required this.index});
+}
+
+class NotAnsweredYet extends QuizInfoState {}
+
+class CorrectAnswer extends QuizInfoState {}
+
+class WrongAnswer extends QuizInfoState {}

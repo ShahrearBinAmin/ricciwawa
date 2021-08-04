@@ -12,3 +12,10 @@ class GetQuizStat extends QuizInfoEvent {
   final String quizId;
   GetQuizStat(this.quizId);
 }
+
+class GetCurrentIndex extends QuizInfoEvent {
+  final int index;
+  GetCurrentIndex(this.index);
+}
+
+class NextQuiz extends QuizInfoEvent {}

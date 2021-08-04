@@ -5,19 +5,23 @@ class CustomTextButton extends StatelessWidget {
   final String buttonText;
   final Color backgroundColor;
   final EdgeInsets margin;
+  final Function onClick;
 
   const CustomTextButton(
       {Key? key,
       required this.buttonText,
       this.backgroundColor = kGrayBorderColor,
-      this.margin = const EdgeInsets.symmetric(horizontal: 10)})
+      this.margin = const EdgeInsets.symmetric(horizontal: 10),
+      required this.onClick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onClick();
+        },
         child: Container(
           alignment: Alignment.center,
           margin: margin,

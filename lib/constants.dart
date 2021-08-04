@@ -15,3 +15,5 @@ const kDarkGrey = Color(0xFF393939);
 
 const double kDefaultPadding = 20.0;
 const double kBorderWidth = 3.0;
+
+enum Status { CORRECT, WRONG, NEUTRAL }

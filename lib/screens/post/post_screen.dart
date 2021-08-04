@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
 
 class PostScreeen extends StatelessWidget {
   const PostScreeen({Key? key}) : super(key: key);
@@ -75,9 +76,15 @@ class PostScreeen extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          PostOptions(
-            text: "Add Quiz",
-            icon: Icons.attachment,
+          InkWell(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CreateQuiz()));
+            },
+            child: PostOptions(
+              text: "Add Quiz",
+              icon: Icons.attachment,
+            ),
           ),
         ],
       ),

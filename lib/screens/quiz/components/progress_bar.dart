@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
 
-class ProgressBar extends StatelessWidget {
-  const ProgressBar({
-    Key? key,
-  }) : super(key: key);
+class ProgressBar extends StatefulWidget {
+  final double percentage;
+  const ProgressBar({Key? key, required this.percentage}) : super(key: key);
 
+  @override
+  _ProgressBarState createState() => _ProgressBarState();
+}
+
+class _ProgressBarState extends State<ProgressBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +21,7 @@ class ProgressBar extends StatelessWidget {
         children: [
           LayoutBuilder(
             builder: (context, constraints) => Container(
-              width: constraints.maxWidth * 0.5,
+              width: constraints.maxWidth * this.widget.percentage,
               decoration: BoxDecoration(
                   color: kGreenColor, borderRadius: BorderRadius.circular(50)),
             ),
