@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/screens/explanation/explanation.dart';
 
 class CreateQuiz extends StatelessWidget {
   const CreateQuiz({Key? key}) : super(key: key);
@@ -116,6 +117,7 @@ class CreatedQuestionCard extends StatelessWidget {
                 InputOption(
                   optionId: " ",
                   optionText: "媽媽",
+                  correctOption: true,
                 ),
                 SizedBox(
                   height: 10,
@@ -260,8 +262,13 @@ class IconInCircle extends StatelessWidget {
 class InputOption extends StatelessWidget {
   final String optionId;
   final String optionText;
-  const InputOption(
-      {Key? key, required this.optionId, required this.optionText})
+  bool correctOption;
+
+  InputOption(
+      {Key? key,
+      required this.optionId,
+      required this.optionText,
+      this.correctOption = false})
       : super(key: key);
 
   @override
@@ -269,8 +276,10 @@ class InputOption extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       decoration: BoxDecoration(
+          color: correctOption ? kGreenColor : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white, width: 2)),
+          border: Border.all(
+              color: correctOption ? kGreenColor : Colors.white, width: 2)),
       child: Row(
         children: [
           Container(
@@ -298,6 +307,19 @@ class InputOption extends StatelessWidget {
               decoration: InputDecoration(
                   hintText: optionText,
                   border: InputBorder.none,
+                  suffixIcon: correctOption
+                      ? InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ExplanationScreen()));
+                          },
+                          child: Icon(
+                            Icons.help,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        )
+                      : null,
                   hintStyle: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white)),
             ),

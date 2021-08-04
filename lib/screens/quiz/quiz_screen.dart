@@ -25,9 +25,11 @@ class _QuizScreenState extends State<QuizScreen> {
   int _currentIndex = 0;
   PageController _pageController = new PageController(initialPage: 0);
   late Quiz _quiz;
-  Status questionStatus = Status.NEUTRAL;
+  Status questionStatus = Status.CHECK_DISABLED;
   Set<String> correctAnswers = {};
   Set<String> wrongAnswers = {};
+  String _optionName = "";
+  String _questionId = "";
 
   @override
   void initState() {
@@ -37,9 +39,6 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void onNext() {
-    print(correctAnswers);
-    print(wrongAnswers);
-
     if (this._currentIndex + 1 == this._totalPage) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => QuizResult(
@@ -54,35 +53,53 @@ class _QuizScreenState extends State<QuizScreen> {
     }
 
     setState(() {
-      questionStatus = Status.NEUTRAL;
+      questionStatus = Status.CHECK_DISABLED;
     });
 
     this
         ._pageController
-        .nextPage(duration: Duration(milliseconds: 250), curve: Curves.ease);
+        .nextPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
   }
 
   void onPrevious() {
     this._pageController.previousPage(
-        duration: Duration(milliseconds: 250), curve: Curves.ease);
+        duration: Duration(milliseconds: 700), curve: Curves.ease);
   }
 
-  void optionClicked(String optionName, String questionId) {
+  void onCheckEnabled() {
     Question question = _quiz.questions
-        .firstWhere((element) => element.questionId == questionId);
-    if (question.correctOptionName == optionName) {
+        .firstWhere((element) => element.questionId == _questionId);
+    if (question.correctOptionName == _optionName) {
       setState(() {
         questionStatus = Status.CORRECT;
       });
-      correctAnswers.add(questionId);
+
+      correctAnswers.add(_questionId);
     } else {
       setState(() {
-        setState(() {
-          questionStatus = Status.WRONG;
-        });
+        questionStatus = Status.WRONG;
       });
-      wrongAnswers.add(questionId);
+      wrongAnswers.add(_questionId);
     }
+  }
+
+  void optionClicked(String optionName, String questionId) {
+    setState(() {
+      questionStatus = Status.CHECK_ENABLED;
+    });
+    _optionName = optionName;
+    _questionId = questionId;
+
+    // Question question = _quiz.questions
+    //     .firstWhere((element) => element.questionId == questionId);
+    // if (question.correctOptionName == optionName) {
+    //   questionStatus = Status.CORRECT;
+
+    //   correctAnswers.add(questionId);
+    // } else {
+    //   questionStatus = Status.WRONG;
+    //   wrongAnswers.add(questionId);
+    // }
   }
 
   @override
@@ -147,10 +164,24 @@ class _QuizScreenState extends State<QuizScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    if (questionStatus == Status.NEUTRAL) ...[
+                    if (questionStatus == Status.CHECK_DISABLED) ...[
                       BottomButtons(
-                        onNext: onNext,
+                        onNext: () {},
                         onPrevious: onPrevious,
+                        rightButtonText: "Check",
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ] else if (questionStatus == Status.CHECK_ENABLED) ...[
+                      BottomButtons(
+                        onNext: onCheckEnabled,
+                        onPrevious: onPrevious,
+                        rightButtonText: "Check",
+                        correctOrWrong: kGreenColor,
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                     ] else if (questionStatus == Status.CORRECT) ...[
                       AnswerExplanation(
@@ -166,9 +197,6 @@ class _QuizScreenState extends State<QuizScreen> {
                       ),
                     ],
 
-                    SizedBox(
-                      height: 20,
-                    ),
                     // AnswerExplanation(
                     //   correctOrWrong: kGreenColor,
                     // ),
@@ -256,23 +284,27 @@ class BottomButtons extends StatelessWidget {
   final Color? correctOrWrong;
   final Function onNext;
   final Function onPrevious;
-  const BottomButtons(
-      {Key? key,
-      this.correctOrWrong,
-      required this.onNext,
-      required this.onPrevious})
-      : super(key: key);
+  final String rightButtonText;
+  final String leftButtonText;
+  const BottomButtons({
+    Key? key,
+    this.correctOrWrong,
+    this.rightButtonText = "Next",
+    this.leftButtonText = "Previous",
+    required this.onNext,
+    required this.onPrevious,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         CustomOutlinedButton(
-          buttonText: "Previous",
+          buttonText: leftButtonText,
           onClick: onPrevious,
         ),
         CustomTextButton(
-          buttonText: "Next",
+          buttonText: rightButtonText,
           onClick: onNext,
           backgroundColor: correctOrWrong ?? kGrayBorderColor,
         ),
