@@ -38,64 +38,11 @@ class CreateQuiz extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           children: [
-            Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                  color: kDarkGrey, borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: kLightGreyColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            maxLines: 3,
-                            minLines: 1,
-                            decoration: InputDecoration(
-                                hintText: "Type your question here...",
-                                border: InputBorder.none,
-                                contentPadding:
-                                    const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                                hintStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF7E7E7E))),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.more_vert,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    child: Column(
-                      children: [
-                        InputOption(
-                          optionId: " ",
-                          optionText: "Option 1",
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InputOption(
-                          optionId: " ",
-                          optionText: "Option 2",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            CreatedQuestionCard(),
+            SizedBox(
+              height: 15,
             ),
+            CreationQuestionCard(),
             SizedBox(
               height: 20,
             ),
@@ -110,6 +57,157 @@ class CreateQuiz extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CreatedQuestionCard extends StatelessWidget {
+  const CreatedQuestionCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController _textEditingController = TextEditingController();
+    _textEditingController.text = "李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉云的誰？";
+
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          color: kDarkGrey, borderRadius: BorderRadius.circular(12)),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: kLightGreyColor,
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    maxLines: 3,
+                    minLines: 1,
+                    controller: _textEditingController,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF7E7E7E))),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Column(
+              children: [
+                InputOption(
+                  optionId: " ",
+                  optionText: "媽媽",
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InputOption(
+                  optionId: " ",
+                  optionText: "爸爸",
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InputOption(
+                  optionId: " ",
+                  optionText: "媽媽",
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InputOption(
+                  optionId: " ",
+                  optionText: "爸爸",
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CreationQuestionCard extends StatelessWidget {
+  const CreationQuestionCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          color: kDarkGrey, borderRadius: BorderRadius.circular(12)),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: kLightGreyColor,
+                borderRadius: BorderRadius.circular(12)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    maxLines: 3,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                        hintText: "Type your question here...",
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF7E7E7E))),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child: Column(
+              children: [
+                InputOption(
+                  optionId: " ",
+                  optionText: "Option 1",
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InputOption(
+                  optionId: " ",
+                  optionText: "Option 2",
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
