@@ -6,11 +6,13 @@ class OptionUI extends StatefulWidget {
   final Option option;
   Function onClick;
   String questionId;
+  final bool isSelected;
   OptionUI(
       {Key? key,
       required this.option,
       required this.onClick,
-      required this.questionId})
+      required this.questionId,
+      required this.isSelected})
       : super(key: key);
 
   @override
@@ -18,8 +20,6 @@ class OptionUI extends StatefulWidget {
 }
 
 class _OptionUIState extends State<OptionUI> {
-  bool selected = false;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,10 +27,6 @@ class _OptionUIState extends State<OptionUI> {
         this
             .widget
             .onClick(this.widget.option.optionName, this.widget.questionId);
-
-        setState(() {
-          selected = true;
-        });
       },
       child: Container(
         margin: EdgeInsets.only(top: kDefaultPadding),
@@ -38,7 +34,9 @@ class _OptionUIState extends State<OptionUI> {
             horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
         decoration: BoxDecoration(
             border: Border.all(
-                color: this.selected ? Color(0xFF3B89A6) : kGrayBorderColor,
+                color: this.widget.isSelected
+                    ? Color(0xFF3B89A6)
+                    : kGrayBorderColor,
                 width: kBorderWidth),
             borderRadius: BorderRadius.circular(50)),
         child: Row(

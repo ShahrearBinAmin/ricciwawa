@@ -7,8 +7,12 @@ import 'option.dart';
 class QuestionCard extends StatefulWidget {
   final Question question;
   final Function onOptionClick;
+  final String selectedOptionName;
   const QuestionCard(
-      {Key? key, required this.question, required this.onOptionClick})
+      {Key? key,
+      required this.question,
+      required this.onOptionClick,
+      required this.selectedOptionName})
       : super(key: key);
 
   @override
@@ -41,6 +45,8 @@ class _QuestionCardState extends State<QuestionCard> {
                   option: this.widget.question.options[index],
                   questionId: this.widget.question.questionId,
                   onClick: this.widget.onOptionClick,
+                  isSelected: this.widget.question.options[index].optionName ==
+                      this.widget.selectedOptionName,
                 );
               })
         ],

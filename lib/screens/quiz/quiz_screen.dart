@@ -55,6 +55,8 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       questionStatus = Status.CHECK_DISABLED;
     });
+    _optionName = "";
+    _questionId = "";
 
     this
         ._pageController
@@ -158,6 +160,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             itemCount: state.quiz.questions.length,
                             itemBuilder: (context, index) => QuestionCard(
                                 onOptionClick: optionClicked,
+                                selectedOptionName: _optionName,
                                 question: state.quiz.questions[index])),
                       ),
                     ),
