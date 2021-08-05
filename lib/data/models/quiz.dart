@@ -16,4 +16,18 @@ class Quiz {
   void addQuestion(Question question) {
     questions.add(question);
   }
+
+  Quiz copyWith({
+    String? quizId,
+    String? postId,
+    String? creatorId,
+    List<Question>? questions,
+  }) {
+    return Quiz(
+      quizId: quizId ?? this.quizId,
+      postId: postId ?? this.postId,
+      creatorId: creatorId ?? this.creatorId,
+      questions: questions ?? this.questions.map((e) => e.copyWith()).toList(),
+    );
+  }
 }

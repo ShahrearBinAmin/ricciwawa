@@ -17,3 +17,5 @@ const double kDefaultPadding = 20.0;
 const double kBorderWidth = 3.0;
 
 enum Status { CORRECT, WRONG, CHECK_DISABLED, CHECK_ENABLED }
+
+enum CardAction { Duplicate, Delete }
