@@ -74,26 +74,43 @@ class _CreateQuizState extends State<CreateQuiz> {
           margin: EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              // CreatedQuestionCard(),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              ListView.separated(
+              // ListView.separated(
+              //     shrinkWrap: true,
+              //     physics: NeverScrollableScrollPhysics(),
+              //     scrollDirection: Axis.vertical,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return CreationQuestionCard(
+              //         question: _questions[index],
+              //         onDelete: onDeleteQuestion,
+              //         onDuplicate: onDuplicateQuestion,
+              //       );
+              //     },
+              //     separatorBuilder: (BuildContext context, int index) =>
+              //         SizedBox(
+              //           height: 15,
+              //         ),
+              //     itemCount: _questions.length),
+
+              ReorderableListView(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CreationQuestionCard(
-                      question: _questions[index],
-                      onDelete: onDeleteQuestion,
-                      onDuplicate: onDuplicateQuestion,
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                        height: 15,
-                      ),
-                  itemCount: _questions.length),
+                  children: <Widget>[
+                    for (int index = 0; index < _questions.length; index++)
+                      CreationQuestionCard(
+                        key: Key("$index"),
+                        question: _questions[index],
+                        onDelete: onDeleteQuestion,
+                        onDuplicate: onDuplicateQuestion,
+                      )
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final Question question = _questions.removeAt(oldIndex);
+                    _questions.insert(newIndex, question);
+                    setState(() {});
+                  }),
+
               SizedBox(
                 height: 20,
               ),
@@ -101,8 +118,9 @@ class _CreateQuizState extends State<CreateQuiz> {
                 children: [
                   InkWell(
                     onTap: () {
-                      _questions.add(generateQuestion(_questions.length + 1));
-                      setState(() {});
+                      setState(() {
+                        _questions.add(generateQuestion(_questions.length + 1));
+                      });
                     },
                     child: Icon(
                       Icons.add_circle_outline,
@@ -153,6 +171,12 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
     this.widget.question.addOption(
         generateOption("${this.widget.question.options.length + 1}"));
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    print(widget.question);
+    super.initState();
   }
 
   @override
