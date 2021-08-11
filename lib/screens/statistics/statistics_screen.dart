@@ -33,23 +33,26 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
           child: Column(
             children: [
               QuestionText(question: _question),
-              ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        OptionStats(
-                          option: _question.options[index],
+              Expanded(
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          OptionStats(
+                            option: _question.options[index],
+                          ),
+                          UserList(option: _question.options[index])
+                        ],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        SizedBox(
+                          height: 15,
                         ),
-                        UserList(option: _question.options[index])
-                      ],
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                        height: 15,
-                      ),
-                  itemCount: _question.options.length),
+                    itemCount: _question.options.length),
+              ),
             ],
           ),
         ),
@@ -94,6 +97,7 @@ class UserList extends StatelessWidget {
       color: Color(0xFF262626),
       child: ListView.separated(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int innerIndex) {
             var user = _option.optionStat.answeredUsers[innerIndex];
             return ListTile(

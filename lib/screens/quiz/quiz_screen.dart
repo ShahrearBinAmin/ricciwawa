@@ -103,6 +103,10 @@ class _QuizScreenState extends State<QuizScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [],
+        leadingWidth: 20,
+        title: ProgressBar(
+          percentage: .5,
+        ),
       ),
       body: BlocConsumer<QuizInfoBloc, QuizInfoState>(
         listener: (context, state) {
@@ -126,7 +130,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           horizontal: kDefaultPadding / 2),
                       child: ProgressBar(
                         percentage: this._currentPercentage == 0
-                            ? (1 / state.quiz.questions.length)
+                            ? (1 / _totalPage)
                             : this._currentPercentage,
                       ),
                     ),
