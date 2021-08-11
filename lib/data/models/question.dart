@@ -10,17 +10,19 @@ class Question {
   bool shuffleOption;
   int createTime;
   List<Option> options;
+  bool isDefault;
 
-  Question({
-    required this.questionId,
-    required this.questionText,
-    required this.correctOptionId,
-    required this.correctOptionName,
-    required this.explanation,
-    required this.position,
-    required this.shuffleOption,
-    required this.options,
-  }) : createTime = DateTime.now().microsecondsSinceEpoch;
+  Question(
+      {required this.questionId,
+      required this.questionText,
+      required this.correctOptionId,
+      required this.correctOptionName,
+      required this.explanation,
+      required this.position,
+      required this.shuffleOption,
+      required this.options,
+      this.isDefault = false})
+      : createTime = DateTime.now().microsecondsSinceEpoch;
 
   void addOption(Option option) {
     this.options.add(option);
@@ -30,26 +32,26 @@ class Question {
     this.options.removeWhere((element) => element.optionName == optionName);
   }
 
-  Question copyWith({
-    String? questionId,
-    String? questionText,
-    String? correctOptionId,
-    String? correctOptionName,
-    String? explanation,
-    int? position,
-    bool? shuffleOption,
-    List<Option>? options,
-  }) {
+  Question copyWith(
+      {String? questionId,
+      String? questionText,
+      String? correctOptionId,
+      String? correctOptionName,
+      String? explanation,
+      int? position,
+      bool? shuffleOption,
+      List<Option>? options,
+      bool? isDefault}) {
     return Question(
-      questionId: questionId ?? this.questionId,
-      questionText: questionText ?? this.questionText,
-      correctOptionId: correctOptionId ?? this.correctOptionId,
-      correctOptionName: correctOptionName ?? this.correctOptionName,
-      explanation: explanation ?? this.explanation,
-      position: position ?? this.position,
-      shuffleOption: shuffleOption ?? this.shuffleOption,
-      options: options ?? this.options.map((e) => e.copyWith()).toList(),
-    );
+        questionId: questionId ?? this.questionId,
+        questionText: questionText ?? this.questionText,
+        correctOptionId: correctOptionId ?? this.correctOptionId,
+        correctOptionName: correctOptionName ?? this.correctOptionName,
+        explanation: explanation ?? this.explanation,
+        position: position ?? this.position,
+        shuffleOption: shuffleOption ?? this.shuffleOption,
+        options: options ?? this.options.map((e) => e.copyWith()).toList(),
+        isDefault: isDefault ?? this.isDefault);
   }
 
   @override

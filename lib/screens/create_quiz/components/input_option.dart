@@ -97,7 +97,8 @@ class _InputOptionState extends State<InputOption> {
           ),
           Expanded(
             child: TextField(
-              style: TextStyle(color: Colors.white),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               controller: _controller,
               onChanged: (String text) {
                 widget.option.optionText = text;

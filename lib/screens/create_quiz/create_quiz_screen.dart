@@ -3,6 +3,7 @@ import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/models/question.dart';
 import 'package:ricciwawa/screens/create_quiz/components/add_option_button.dart';
 import 'package:ricciwawa/utils/util.dart';
+import 'package:uuid/uuid.dart';
 
 import 'components/input_option.dart';
 
@@ -15,7 +16,7 @@ class CreateQuiz extends StatefulWidget {
 
 class _CreateQuizState extends State<CreateQuiz> {
   List<Question> _questions = [
-    generateQuestion(1),
+    generateQuestion(Uuid().v4()),
   ];
 
   void onDeleteQuestion(String questionId) {
@@ -29,8 +30,8 @@ class _CreateQuizState extends State<CreateQuiz> {
   void onDuplicateQuestion(String questionId) {
     Question currentQuestion =
         _questions.firstWhere((element) => element.questionId == questionId);
-    Question _copiedQuestion = currentQuestion.copyWith(
-        questionId: (_questions.length + 1).toString());
+    Question _copiedQuestion =
+        currentQuestion.copyWith(questionId: Uuid().v4(), isDefault: true);
     _questions.add(_copiedQuestion);
 
     setState(() {});
@@ -123,7 +124,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        _questions.add(generateQuestion(_questions.length + 1));
+                        _questions.add(generateQuestion(Uuid().v4()));
                       });
                     },
                     child: Icon(
@@ -158,13 +159,7 @@ class CreationQuestionCard extends StatefulWidget {
 }
 
 class _CreationQuestionCardState extends State<CreationQuestionCard> {
-  // List<Option> _currentOptions = List.generate(
-  //     2,
-  //     (index) => Option(
-  //         optionId: "${index + 1}",
-  //         optionName: "${index + 1}",
-  //         optionText: "${index + 1}",
-  //         optionStat: generateOptionSate()));
+  late TextEditingController _controller;
 
   void onSelectCorrectOption(String optionName) {
     setState(() {
@@ -174,8 +169,7 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
 
   void addOption() {
     setState(() {
-      this.widget.question.addOption(generateOption(
-          "${DateTime.now().millisecondsSinceEpoch.toString()}"));
+      this.widget.question.addOption(generateOption(Uuid().v4()));
     });
   }
 
@@ -187,7 +181,8 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
 
   @override
   void initState() {
-    print(widget.question);
+    _controller = TextEditingController(
+        text: widget.question.isDefault ? widget.question.questionText : '');
     super.initState();
   }
 
@@ -213,6 +208,8 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
                     onChanged: (String text) {
                       widget.question.questionText = text;
                     },
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    controller: _controller,
                     decoration: InputDecoration(
                         hintText: "Type your question here...",
                         border: InputBorder.none,
@@ -257,8 +254,9 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
                           addNewOption: addOption,
                           deleteOption: onDelete,
                           currentIndex: index,
-                          totalOptions: widget.question.options.length,
                           onSelectCorrectOption: onSelectCorrectOption,
+                          setDefaultValues: widget.question.isDefault,
+                          totalOptions: widget.question.options.length,
                           option: widget.question.options[index],
                           correctOption: widget.question.correctOptionName ==
                               widget.question.options[index].optionName,

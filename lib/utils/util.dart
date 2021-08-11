@@ -8,17 +8,14 @@ OptionStat generateOptionSate() {
   );
 }
 
-Question generateQuestion(int id) {
-  List<Option> options = List.generate(
-      2,
-      (index) => Option(
-          optionId: generateUidWithTimeStamp(),
-          optionName: generateUidWithTimeStamp(),
-          optionText: "",
-          optionStat: generateOptionSate()));
+Question generateQuestion(String id) {
+  List<Option> options = List.generate(2, (index) {
+    String optionId = Uuid().v4();
+    return generateOption(optionId);
+  });
 
   return Question(
-      questionId: "$id",
+      questionId: id,
       questionText: "",
       correctOptionId: "",
       correctOptionName: "",
@@ -34,9 +31,4 @@ Option generateOption(String name) {
       optionName: name,
       optionText: "",
       optionStat: generateOptionSate());
-}
-
-String generateUidWithTimeStamp() {
-  var uuid = Uuid();
-  return uuid.v4();
 }
