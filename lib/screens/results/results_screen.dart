@@ -167,30 +167,33 @@ class ResultOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color _color =
+        option.optionName == correctOptionName ? kGreenColor : Colors.white;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           "${this.option.optionName}. ${this.option.optionText}",
-          style: TextStyle(color: Colors.white, fontSize: 15),
+          style: TextStyle(color: _color, fontSize: 15),
         ),
-        if (this.option.optionName == this.correctOptionName) ...[
-          SizedBox(
-            width: 5,
-          ),
-          Icon(
-            Icons.check_circle_outline,
-            color: Colors.white,
-            size: 20,
-          ),
-        ],
+        // if (this.option.optionName == this.correctOptionName) ...[
+        //   SizedBox(
+        //     width: 5,
+        //   ),
+        //   Icon(
+        //     Icons.check_circle_outline,
+        //     color: Colors.white,
+        //     size: 20,
+        //   ),
+        // ],
         Spacer(),
         InkWell(
           onTap: () => onPercentageClick(context),
           child: Text(
             "${this.option.optionStat.percentage.round()}%",
-            style: TextStyle(color: Colors.white, fontSize: 15),
+            style: TextStyle(color: _color, fontSize: 15),
           ),
         )
       ],
