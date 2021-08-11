@@ -5,17 +5,11 @@ import 'package:ricciwawa/screens/explanation/explanation.dart';
 
 class AddOptionButton extends StatefulWidget {
   Function addNewOption;
-  Function deleteOption;
-  int currentIndex;
-  int totalOptions;
 
-  AddOptionButton(
-      {Key? key,
-      required this.currentIndex,
-      required this.totalOptions,
-      required this.addNewOption,
-      required this.deleteOption})
-      : super(key: key);
+  AddOptionButton({
+    Key? key,
+    required this.addNewOption,
+  }) : super(key: key);
 
   @override
   _AddOptionButtonState createState() => _AddOptionButtonState();

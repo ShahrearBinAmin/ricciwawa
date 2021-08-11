@@ -116,7 +116,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                   }),
 
               SizedBox(
-                height: 20,
+                height: 5,
               ),
               Row(
                 children: [
@@ -194,6 +194,7 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
           color: kDarkGrey, borderRadius: BorderRadius.circular(12)),
@@ -268,10 +269,8 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
                     height: 10,
                   ),
                   AddOptionButton(
-                      currentIndex: 0,
-                      totalOptions: 0,
-                      addNewOption: addOption,
-                      deleteOption: () {})
+                    addNewOption: addOption,
+                  )
                 ]
               ],
             ),
