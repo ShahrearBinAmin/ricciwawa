@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/models/question.dart';
+import 'package:ricciwawa/screens/create_quiz/components/add_option_button.dart';
 import 'package:ricciwawa/utils/util.dart';
 
 import 'components/input_option.dart';
@@ -92,11 +93,12 @@ class _CreateQuizState extends State<CreateQuiz> {
               //     itemCount: _questions.length),
 
               ReorderableListView(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: <Widget>[
                     for (int index = 0; index < _questions.length; index++)
                       CreationQuestionCard(
-                        key: Key("$index"),
+                        key: ValueKey(_questions[index]),
                         question: _questions[index],
                         onDelete: onDeleteQuestion,
                         onDuplicate: onDuplicateQuestion,
@@ -106,9 +108,11 @@ class _CreateQuizState extends State<CreateQuiz> {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
                     }
-                    final Question question = _questions.removeAt(oldIndex);
-                    _questions.insert(newIndex, question);
-                    setState(() {});
+
+                    setState(() {
+                      final Question question = _questions.removeAt(oldIndex);
+                      _questions.insert(newIndex, question);
+                    });
                   }),
 
               SizedBox(
@@ -163,14 +167,22 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
   //         optionStat: generateOptionSate()));
 
   void onSelectCorrectOption(String optionName) {
-    this.widget.question.correctOptionName = optionName;
-    setState(() {});
+    setState(() {
+      this.widget.question.correctOptionName = optionName;
+    });
   }
 
   void addOption() {
-    this.widget.question.addOption(
-        generateOption("${this.widget.question.options.length + 1}"));
-    setState(() {});
+    setState(() {
+      this.widget.question.addOption(generateOption(
+          "${DateTime.now().millisecondsSinceEpoch.toString()}"));
+    });
+  }
+
+  void onDelete(String optionName) {
+    setState(() {
+      this.widget.question.deleteOption(optionName);
+    });
   }
 
   @override
@@ -209,13 +221,6 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
                             color: Color(0xFF7E7E7E))),
                   ),
                 ),
-                // InkWell(
-                //   onTap: () {},
-                //   child: Icon(
-                //     Icons.more_vert,
-                //     color: Colors.black,
-                //   ),
-                // )
                 PopupMenuButton<CardAction>(
                   onSelected: (CardAction result) {
                     if (result == CardAction.Delete) {
@@ -237,25 +242,39 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            child: ListView.separated(
-                itemCount: widget.question.options.length,
-                physics: NeverScrollableScrollPhysics(),
-                separatorBuilder: (_, indx) => SizedBox(
-                      height: 10,
-                    ),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InputOption(
+            child: Column(
+              children: [
+                ListView.separated(
+                    itemCount: widget.question.options.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (_, indx) => SizedBox(
+                          height: 10,
+                        ),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InputOption(
+                          addNewOption: addOption,
+                          deleteOption: onDelete,
+                          currentIndex: index,
+                          totalOptions: widget.question.options.length,
+                          onSelectCorrectOption: onSelectCorrectOption,
+                          option: widget.question.options[index],
+                          correctOption: widget.question.correctOptionName ==
+                              widget.question.options[index].optionName,
+                          optionHintText: "Option ${index + 1}");
+                    }),
+                if (widget.question.options.length < 6) ...[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  AddOptionButton(
+                      currentIndex: 0,
+                      totalOptions: 0,
                       addNewOption: addOption,
-                      currentIndex: index,
-                      totalOptions: widget.question.options.length,
-                      onSelectCorrectOption: onSelectCorrectOption,
-                      option: widget.question.options[index],
-                      correctOption: widget.question.correctOptionName ==
-                          widget.question.options[index].optionName,
-                      optionHintText:
-                          "Option ${widget.question.options[index].optionName}");
-                }),
+                      deleteOption: () {})
+                ]
+              ],
+            ),
           ),
         ],
       ),

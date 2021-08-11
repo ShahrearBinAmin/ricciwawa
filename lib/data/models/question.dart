@@ -8,6 +8,7 @@ class Question {
   String explanation;
   int position;
   bool shuffleOption;
+  int createTime;
   List<Option> options;
 
   Question({
@@ -19,10 +20,14 @@ class Question {
     required this.position,
     required this.shuffleOption,
     required this.options,
-  });
+  }) : createTime = DateTime.now().microsecondsSinceEpoch;
 
   void addOption(Option option) {
-    options.add(option);
+    this.options.add(option);
+  }
+
+  void deleteOption(String optionName) {
+    this.options.removeWhere((element) => element.optionName == optionName);
   }
 
   Question copyWith({
@@ -57,11 +62,13 @@ class OptionStat {
   final List<User> answeredUsers;
   final double percentage;
   final int answeredUsersCount;
+  int createTime;
+
   OptionStat({
     this.answeredUsers = const <User>[],
     this.percentage = 0,
     this.answeredUsersCount = 0,
-  });
+  }) : createTime = DateTime.now().microsecondsSinceEpoch;
 
   OptionStat copyWith({
     List<User>? answeredUsers,

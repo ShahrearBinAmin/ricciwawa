@@ -10,6 +10,7 @@ class InputOption extends StatefulWidget {
   bool setDefaultValues;
   Function onSelectCorrectOption;
   Function addNewOption;
+  Function deleteOption;
   int currentIndex;
   int totalOptions;
 
@@ -22,7 +23,8 @@ class InputOption extends StatefulWidget {
       required this.onSelectCorrectOption,
       required this.currentIndex,
       required this.totalOptions,
-      required this.addNewOption})
+      required this.addNewOption,
+      required this.deleteOption})
       : super(key: key);
 
   @override
@@ -122,7 +124,12 @@ class _InputOptionState extends State<InputOption> {
                             size: 30,
                           ),
                         )
-                      : null,
+                      : InkWell(
+                          onTap: () {
+                            this.widget.deleteOption(widget.option.optionName);
+                          },
+                          child:
+                              Icon(Icons.close, color: Colors.white, size: 30)),
                   hintStyle: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.white)),
             ),

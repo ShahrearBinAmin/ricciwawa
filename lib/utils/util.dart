@@ -1,4 +1,5 @@
 import 'package:ricciwawa/data/models/question.dart';
+import 'package:uuid/uuid.dart';
 
 OptionStat generateOptionSate() {
   return OptionStat(
@@ -8,6 +9,14 @@ OptionStat generateOptionSate() {
 }
 
 Question generateQuestion(int id) {
+  List<Option> options = List.generate(
+      2,
+      (index) => Option(
+          optionId: generateUidWithTimeStamp(),
+          optionName: generateUidWithTimeStamp(),
+          optionText: "",
+          optionStat: generateOptionSate()));
+
   return Question(
       questionId: "$id",
       questionText: "",
@@ -16,18 +25,7 @@ Question generateQuestion(int id) {
       explanation: "",
       position: 0,
       shuffleOption: false,
-      options: [
-        Option(
-            optionId: "1",
-            optionName: "1",
-            optionText: "",
-            optionStat: generateOptionSate()),
-        Option(
-            optionId: "2",
-            optionName: "2",
-            optionText: "",
-            optionStat: generateOptionSate()),
-      ]);
+      options: options);
 }
 
 Option generateOption(String name) {
@@ -36,4 +34,9 @@ Option generateOption(String name) {
       optionName: name,
       optionText: "",
       optionStat: generateOptionSate());
+}
+
+String generateUidWithTimeStamp() {
+  var uuid = Uuid();
+  return uuid.v4();
 }
