@@ -12,13 +12,13 @@ class QuizInfoRepository implements QuizRepository {
   @override
   Future<Quiz> fetchQuiz(String quizId) {
     // TODO: implement fetchQuiz
-    return Future.delayed(Duration(seconds: 1), () {
+    return Future.delayed(Duration(milliseconds: 300), () {
       return quiz_with_stat;
     });
   }
 
   Future<Quiz> fetchQuizWithStat(String quizId) {
-    return Future.delayed(Duration(seconds: 1), () {
+    return Future.delayed(Duration(milliseconds: 300), () {
       return quiz_with_stat;
     });
   }

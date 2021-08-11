@@ -93,7 +93,9 @@ class QuizResult extends StatelessWidget {
               height: 50,
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text(
                   "Retake Quiz",
                   style: Theme.of(context)

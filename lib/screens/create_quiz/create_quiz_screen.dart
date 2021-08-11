@@ -253,6 +253,7 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
                       return InputOption(
                           addNewOption: addOption,
                           deleteOption: onDelete,
+                          question: widget.question,
                           currentIndex: index,
                           onSelectCorrectOption: onSelectCorrectOption,
                           setDefaultValues: widget.question.isDefault,

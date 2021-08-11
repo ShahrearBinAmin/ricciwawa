@@ -6,6 +6,7 @@ import 'package:ricciwawa/screens/explanation/explanation.dart';
 class InputOption extends StatefulWidget {
   String optionHintText;
   Option option;
+  Question question;
   bool correctOption;
   bool setDefaultValues;
   Function onSelectCorrectOption;
@@ -24,6 +25,7 @@ class InputOption extends StatefulWidget {
       required this.currentIndex,
       required this.totalOptions,
       required this.addNewOption,
+      required this.question,
       required this.deleteOption})
       : super(key: key);
 
@@ -117,7 +119,8 @@ class _InputOptionState extends State<InputOption> {
                       ? InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ExplanationScreen()));
+                                builder: (context) => ExplanationScreen(
+                                    question: widget.question)));
                           },
                           child: Icon(
                             Icons.help,
