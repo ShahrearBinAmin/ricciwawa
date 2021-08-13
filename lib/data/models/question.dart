@@ -5,6 +5,7 @@ class Question {
   String questionText;
   String correctOptionId;
   String correctOptionName;
+  String? selectedOptionName;
   String explanation;
   int position;
   bool shuffleOption;
@@ -21,7 +22,8 @@ class Question {
       required this.position,
       required this.shuffleOption,
       required this.options,
-      this.isDefault = false})
+      this.isDefault = false,
+      this.selectedOptionName})
       : createTime = DateTime.now().microsecondsSinceEpoch;
 
   void addOption(Option option) {
@@ -110,7 +112,7 @@ class Option {
       optionId: optionId ?? this.optionId,
       optionName: optionName ?? this.optionName,
       optionText: optionText ?? this.optionText,
-      optionStat: optionStat ?? this.optionStat,
+      optionStat: optionStat ?? this.optionStat.copyWith(),
     );
   }
 

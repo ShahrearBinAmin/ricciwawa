@@ -12,7 +12,7 @@ const kDarkRed = Color(0xFFFF0000);
 const kLightGreyColor = Color(0xFFA39E9E);
 const kTextFieldBackGround = Color(0xFF222222);
 const kDarkGrey = Color(0xFF393939);
-
+const kDarkGrey2 = Color(0xFF262626);
 const double kDefaultPadding = 20.0;
 const double kBorderWidth = 3.0;
 

@@ -7,6 +7,7 @@ import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
 import 'package:ricciwawa/screens/explanation/explanation.dart';
 import 'package:ricciwawa/screens/post/post_screen.dart';
 import 'package:ricciwawa/screens/quiz/quiz_screen.dart';
+import 'package:ricciwawa/screens/quiz_done/quiz_done_by_student.dart';
 import 'package:ricciwawa/screens/quiz_result/quiz_result.dart';
 import 'package:ricciwawa/screens/results/results_screen.dart';
 import 'package:ricciwawa/screens/statistics/statistics_screen.dart';
@@ -29,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: "/",
+      initialRoute: "/quiz_done_by_student",
       theme: ThemeData(fontFamily: "Montserrat"),
       // home: BlocProvider(
       //   create: (context) => QuizInfoBloc(QuizInfoRepository()),
@@ -45,9 +46,17 @@ class _MyAppState extends State<MyApp> {
               value: _quizInfoBloc,
               child: CreateQuiz(),
             ),
+        '/create_post': (context) => BlocProvider.value(
+              value: _quizInfoBloc,
+              child: PostScreeen(),
+            ),
         '/quiz_stat': (context) => BlocProvider.value(
               value: _quizInfoBloc,
               child: ResultsScreen(),
+            ),
+        '/quiz_done_by_student': (context) => BlocProvider.value(
+              value: _quizInfoBloc,
+              child: QuizDoneByStudent(),
             ),
       },
     );
@@ -83,6 +92,11 @@ class Home extends StatelessWidget {
                   Navigator.of(context).pushNamed("/create_quiz");
                 },
                 child: Text("Create Quiz")),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/create_post");
+                },
+                child: Text("Create Post")),
             OutlinedButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed("/quiz_stat");

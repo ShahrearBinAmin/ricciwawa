@@ -96,27 +96,29 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: kSecondaryColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [],
-        leadingWidth: 20,
-        title: ProgressBar(
-          percentage: .5,
-        ),
-      ),
-      body: BlocConsumer<QuizInfoBloc, QuizInfoState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
-        builder: (context, state) {
-          if (state is QuizInfoLoaded) {
-            _totalPage = state.quiz.questions.length;
-            _quiz = state.quiz;
-            return Container(
+    return BlocConsumer<QuizInfoBloc, QuizInfoState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        if (state is QuizInfoLoaded) {
+          _totalPage = state.quiz.questions.length;
+          _quiz = state.quiz;
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: kSecondaryColor,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [],
+              leadingWidth: 20,
+              title: ProgressBar(
+                percentage: this._currentPercentage == 0
+                    ? (1 / _totalPage)
+                    : this._currentPercentage,
+              ),
+            ),
+            body: Container(
               decoration: BoxDecoration(color: kSecondaryColor),
               width: double.infinity,
               height: double.infinity,
@@ -125,15 +127,15 @@ class _QuizScreenState extends State<QuizScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding / 2),
-                      child: ProgressBar(
-                        percentage: this._currentPercentage == 0
-                            ? (1 / _totalPage)
-                            : this._currentPercentage,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //       horizontal: kDefaultPadding / 2),
+                    //   child: ProgressBar(
+                    //     percentage: this._currentPercentage == 0
+                    //         ? (1 / _totalPage)
+                    //         : this._currentPercentage,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 10,
                     ),
@@ -199,15 +201,21 @@ class _QuizScreenState extends State<QuizScreen> {
                   ],
                 ),
               )),
-            );
-          } else {
-            return Container(
-              height: 0,
-              width: 0,
-            );
-          }
-        },
-      ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: kSecondaryColor,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              actions: [],
+              leadingWidth: 20,
+            ),
+          );
+        }
+      },
     );
   }
 }

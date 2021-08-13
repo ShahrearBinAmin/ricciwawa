@@ -20,6 +20,7 @@ class _CreateQuizState extends State<CreateQuiz> {
   ];
 
   void onDeleteQuestion(String questionId) {
+    print(questionId);
     setState(() {
       _questions = _questions
           .where((element) => element.questionId != questionId)

@@ -17,4 +17,4 @@ samples, guidance on mobile development, and a full API reference.
 
 ## Build
 
-- flutter build apk --split-per-abi
+- flutter build apk --split-per-abi [--debug]
