@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/repositories/quiz_repository.dart';
 import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
+import 'package:ricciwawa/screens/answer_details/answere_details.dart';
 import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
 import 'package:ricciwawa/screens/explanation/explanation.dart';
 import 'package:ricciwawa/screens/post/post_screen.dart';
@@ -10,6 +11,7 @@ import 'package:ricciwawa/screens/quiz/quiz_screen.dart';
 import 'package:ricciwawa/screens/quiz_done/quiz_done_by_student.dart';
 import 'package:ricciwawa/screens/quiz_result/quiz_result.dart';
 import 'package:ricciwawa/screens/results/results_screen.dart';
+import 'package:ricciwawa/screens/self_quiz_result_view/self_quiz_result_view.dart';
 import 'package:ricciwawa/screens/statistics/statistics_screen.dart';
 import 'package:ricciwawa/theme/theme.dart';
 
@@ -30,7 +32,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: "/quiz_done_by_student",
+      // initialRoute: "/quiz_done_by_student",
+      // initialRoute: "/answer_details",
+      initialRoute: "/",
+
       theme: ThemeData(fontFamily: "Montserrat"),
       // home: BlocProvider(
       //   create: (context) => QuizInfoBloc(QuizInfoRepository()),
@@ -57,6 +62,14 @@ class _MyAppState extends State<MyApp> {
         '/quiz_done_by_student': (context) => BlocProvider.value(
               value: _quizInfoBloc,
               child: QuizDoneByStudent(),
+            ),
+        '/answer_details': (context) => BlocProvider.value(
+              value: _quizInfoBloc,
+              child: UserAnswerDetailsScreen(),
+            ),
+        '/self_quiz_result_view': (context) => BlocProvider.value(
+              value: _quizInfoBloc,
+              child: SelfQuizResultViewScreen(),
             ),
       },
     );
@@ -102,6 +115,11 @@ class Home extends StatelessWidget {
                   Navigator.of(context).pushNamed("/quiz_stat");
                 },
                 child: Text("Quiz Stat")),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/self_quiz_result_view");
+                },
+                child: Text("Self Quiz Info")),
           ],
         ),
       ),

@@ -1,0 +1,1 @@
+enum QuizViewer { CREATOR, EXAMINEE }

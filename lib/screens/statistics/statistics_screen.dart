@@ -100,14 +100,19 @@ class UserList extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int innerIndex) {
             var user = _option.optionStat.answeredUsers[innerIndex];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: kLightGreyColor,
-              ),
-              title: Text(
-                user.name,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            return InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed("/quiz_done_by_student");
+              },
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: kLightGreyColor,
+                ),
+                title: Text(
+                  user.name,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ),
             );
           },

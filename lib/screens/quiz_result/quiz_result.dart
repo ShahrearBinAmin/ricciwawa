@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/models/answer_quiz.dart';
 
@@ -94,7 +95,8 @@ class QuizResult extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  //Navigator.pop(context);
+                  _onAlertButtonsPressed(context);
                 },
                 child: Text(
                   "Retake Quiz",
@@ -113,6 +115,41 @@ class QuizResult extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _onAlertButtonsPressed(context) {
+    Alert(
+      context: context,
+      type: AlertType.warning,
+      title: "UNRATED QUIZ",
+      desc: "Only first quiz attempt is saved.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "BACK",
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+          color: kRedColor,
+        ),
+        DialogButton(
+            child: Text(
+              "PROCEED",
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed("/answer_quiz");
+            },
+            color: kGreenColor)
+      ],
+    ).show();
   }
 }
 

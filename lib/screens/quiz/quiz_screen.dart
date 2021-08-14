@@ -239,10 +239,10 @@ class BottomButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CustomOutlinedButton(
-          buttonText: leftButtonText,
-          onClick: onPrevious,
-        ),
+        // CustomOutlinedButton(
+        //   buttonText: leftButtonText,
+        //   onClick: onPrevious,
+        // ),
         CustomTextButton(
           buttonText: rightButtonText,
           onClick: onNext,

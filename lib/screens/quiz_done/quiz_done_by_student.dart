@@ -1,12 +1,24 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ricciwawa/constants.dart';
+import 'package:ricciwawa/screens/components/post_quiz_stat.dart';
 
-class QuizDoneByStudent extends StatelessWidget {
+class QuizDoneByStudent extends StatefulWidget {
   const QuizDoneByStudent({Key? key}) : super(key: key);
+
+  @override
+  _QuizDoneByStudentState createState() => _QuizDoneByStudentState();
+}
+
+class _QuizDoneByStudentState extends State<QuizDoneByStudent> {
+  void onItemClick() {
+    Navigator.of(context).pushNamed("/answer_details");
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    // print(size.height * .14);
     return Scaffold(
       backgroundColor: kDarkGrey2,
       body: SafeArea(
@@ -24,104 +36,52 @@ class QuizDoneByStudent extends StatelessWidget {
                                 NetworkImage("https://imgur.com/Mr6Rozm.png"))),
                   ),
                   Positioned(
-                    bottom: -20,
-                    left: 20,
-                    child: Row(
+                    bottom: -size.height * .05,
+                    left: size.height * .03,
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundColor: kLightGreyColor,
+                      backgroundImage:
+                          NetworkImage("https://i.imgur.com/MGcuXst.png"),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -size.height * .06,
+                    left: size.height * .14,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          radius: 35,
-                          backgroundColor: kLightGreyColor,
-                          backgroundImage:
-                              NetworkImage("https://i.imgur.com/MGcuXst.png"),
+                        Text(
+                          "DonaldTrump",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
                         ),
                         SizedBox(
-                          width: 10,
+                          height: 10,
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 50),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "DonaldTrump",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "@fintory",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
+                        Text(
+                          "@fintory",
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
                         )
                       ],
                     ),
-                  ),
+                  )
                 ],
-              )
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Expanded(
+                  child: PostQuizStatListView(
+                onItemClick: onItemClick,
+              ))
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class PostQuizStat extends StatelessWidget {
-  const PostQuizStat({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.network("https://imgur.com/uHZ3Mim.png"),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "The Future of Labour People’s Republic of China",
-                maxLines: 2,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "5 - 8 - 2021     14:30",
-                style: TextStyle(color: Colors.white),
-              )
-            ],
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            "88%",
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
-          )
-        ],
       ),
     );
   }

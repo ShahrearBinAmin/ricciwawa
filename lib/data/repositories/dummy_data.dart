@@ -37,7 +37,7 @@ String getTextBasedOnIndex(int index) {
 Quiz quiz_with_stat =
     Quiz(quizId: "1", postId: "10", creatorId: "100", questions: [
   ...List.generate(
-      3,
+      4,
       (index) => Question(
           questionId: "$index",
           questionText: "李明是李蛋的哥哥，劉云是李蛋的媽媽。李明是劉雲的誰?",
@@ -47,6 +47,7 @@ Quiz quiz_with_stat =
               "兒子 is correct because 李明 is 李蛋’s brother. If 李蛋’s mother is 劉雲 , then 李明 ‘s mother is 劉雲 too.",
           position: index,
           shuffleOption: true,
+          selectedOptionName: "B",
           options: List.generate(
               4,
               (index) => Option(
