@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/models/question.dart';
+import 'package:ricciwawa/data/models/quiz.dart';
+import 'package:ricciwawa/logic/create_quiz/bloc/create_quiz_bloc.dart';
 import 'package:ricciwawa/screens/create_quiz/components/add_option_button.dart';
 import 'package:ricciwawa/utils/util.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 import 'components/input_option.dart';
 
@@ -60,8 +64,15 @@ class _CreateQuizState extends State<CreateQuiz> {
             child: ElevatedButton(
               onPressed: () {
                 for (var q in _questions) {
-                  print(q);
+                  print(q.toJson());
                 }
+
+                Quiz _quiz = Quiz(
+                    quizId: "aaa",
+                    postId: "bbbb",
+                    creatorId: "3333",
+                    questions: _questions);
+                context.read<CreateQuizBloc>().add(PostCreateQuizEvent(_quiz));
               },
               child: Text("Save",
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
@@ -72,72 +83,124 @@ class _CreateQuizState extends State<CreateQuiz> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              // ListView.separated(
-              //     shrinkWrap: true,
-              //     physics: NeverScrollableScrollPhysics(),
-              //     scrollDirection: Axis.vertical,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return CreationQuestionCard(
-              //         question: _questions[index],
-              //         onDelete: onDeleteQuestion,
-              //         onDuplicate: onDuplicateQuestion,
-              //       );
-              //     },
-              //     separatorBuilder: (BuildContext context, int index) =>
-              //         SizedBox(
-              //           height: 15,
-              //         ),
-              //     itemCount: _questions.length),
-
-              ReorderableListView(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    for (int index = 0; index < _questions.length; index++)
-                      CreationQuestionCard(
-                        key: ValueKey(_questions[index]),
-                        question: _questions[index],
-                        onDelete: onDeleteQuestion,
-                        onDuplicate: onDuplicateQuestion,
-                      )
-                  ],
-                  onReorder: (int oldIndex, int newIndex) {
-                    if (oldIndex < newIndex) {
-                      newIndex -= 1;
-                    }
-
-                    setState(() {
-                      final Question question = _questions.removeAt(oldIndex);
-                      _questions.insert(newIndex, question);
-                    });
-                  }),
-
-              SizedBox(
-                height: 5,
-              ),
-              Row(
+        child: BlocConsumer<CreateQuizBloc, CreateQuizState>(
+          listener: (context, state) {
+            if (state is CreateQuizEmptyField) {
+              final snackBar = SnackBar(
+                content: const Text('You can not keep any field empty!'),
+                action: SnackBarAction(
+                  label: 'OK',
+                  onPressed: () {
+                    // Some code to undo the change.
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else if (state is CreateQuizSelectCorrectOption) {
+              final snackBar = SnackBar(
+                content: const Text('You need to select correct option!'),
+                action: SnackBarAction(
+                  label: 'OK',
+                  onPressed: () {
+                    // Some code to undo the change.
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else if (state is CreateQuizCreated) {
+              final snackBar = SnackBar(
+                content: const Text('Quiz created!'),
+                action: SnackBarAction(
+                  label: 'OK',
+                  onPressed: () {
+                    // Some code to undo the change.
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else if (state is CreateQuizFailed) {
+              final snackBar = SnackBar(
+                content: const Text('Failed to create quiz!'),
+                action: SnackBarAction(
+                  label: 'OK',
+                  onPressed: () {
+                    // Some code to undo the change.
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
+          builder: (context, state) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        _questions.add(generateQuestion(Uuid().v4()));
-                      });
-                    },
-                    child: Icon(
-                      Icons.add_circle_outline,
-                      color: Colors.white,
-                      size: 35,
-                    ),
+                  // ListView.separated(
+                  //     shrinkWrap: true,
+                  //     physics: NeverScrollableScrollPhysics(),
+                  //     scrollDirection: Axis.vertical,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       return CreationQuestionCard(
+                  //         question: _questions[index],
+                  //         onDelete: onDeleteQuestion,
+                  //         onDuplicate: onDuplicateQuestion,
+                  //       );
+                  //     },
+                  //     separatorBuilder: (BuildContext context, int index) =>
+                  //         SizedBox(
+                  //           height: 15,
+                  //         ),
+                  //     itemCount: _questions.length),
+
+                  ReorderableListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        for (int index = 0; index < _questions.length; index++)
+                          CreationQuestionCard(
+                            key: ValueKey(_questions[index]),
+                            question: _questions[index],
+                            onDelete: onDeleteQuestion,
+                            onDuplicate: onDuplicateQuestion,
+                          )
+                      ],
+                      onReorder: (int oldIndex, int newIndex) {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+
+                        setState(() {
+                          final Question question =
+                              _questions.removeAt(oldIndex);
+                          _questions.insert(newIndex, question);
+                        });
+                      }),
+
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _questions.add(generateQuestion(Uuid().v4()));
+                          });
+                        },
+                        child: Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -165,6 +228,7 @@ class _CreationQuestionCardState extends State<CreationQuestionCard> {
   void onSelectCorrectOption(String optionName) {
     setState(() {
       this.widget.question.correctOptionName = optionName;
+      this.widget.question.correctOptionId = optionName;
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ricciwawa/constants.dart';
 import 'package:ricciwawa/data/repositories/quiz_repository.dart';
 import 'package:ricciwawa/logic/bloc/quiz_info_bloc.dart';
+import 'package:ricciwawa/logic/create_quiz/bloc/create_quiz_bloc.dart';
 import 'package:ricciwawa/screens/answer_details/answere_details.dart';
 import 'package:ricciwawa/screens/create_quiz/create_quiz_screen.dart';
 import 'package:ricciwawa/screens/explanation/explanation.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final QuizInfoBloc _quizInfoBloc = QuizInfoBloc(QuizInfoRepository());
+  final CreateQuizBloc _createQuizBloc = CreateQuizBloc(QuizInfoRepository());
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +50,11 @@ class _MyAppState extends State<MyApp> {
               child: QuizScreen(),
             ),
         '/create_quiz': (context) => BlocProvider.value(
-              value: _quizInfoBloc,
+              value: _createQuizBloc,
               child: CreateQuiz(),
             ),
         '/create_post': (context) => BlocProvider.value(
-              value: _quizInfoBloc,
+              value: _createQuizBloc,
               child: PostScreeen(),
             ),
         '/quiz_stat': (context) => BlocProvider.value(
@@ -78,6 +80,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     _quizInfoBloc.close();
+    _createQuizBloc.close();
     super.dispose();
   }
 }

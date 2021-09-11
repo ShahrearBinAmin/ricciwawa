@@ -1,4 +1,6 @@
 import 'package:ricciwawa/data/models/question.dart';
+import 'dart:convert';
+import 'package:collection/collection.dart';
 
 class Quiz {
   String quizId;
@@ -29,5 +31,60 @@ class Quiz {
       creatorId: creatorId ?? this.creatorId,
       questions: questions ?? this.questions.map((e) => e.copyWith()).toList(),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'quizId': quizId,
+      'postId': postId,
+      'creatorId': creatorId,
+      'questions': questions?.map((x) => x.toMap())?.toList(),
+    };
+  }
+
+  Map<String, dynamic> toMapQuestions() {
+    return {
+      'questions': questions?.map((x) => x.toMap())?.toList(),
+    };
+  }
+
+  factory Quiz.fromMap(Map<String, dynamic> map) {
+    return Quiz(
+      quizId: map['quizId'],
+      postId: map['postId'],
+      creatorId: map['creatorId'],
+      questions: List<Question>.from(
+          map['questions']?.map((x) => Question.fromMap(x))),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+  String toJsonQuestions() => json.encode(toMapQuestions());
+
+  factory Quiz.fromJson(String source) => Quiz.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'Quiz(quizId: $quizId, postId: $postId, creatorId: $creatorId, questions: $questions)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
+
+    return other is Quiz &&
+        other.quizId == quizId &&
+        other.postId == postId &&
+        other.creatorId == creatorId &&
+        listEquals(other.questions, questions);
+  }
+
+  @override
+  int get hashCode {
+    return quizId.hashCode ^
+        postId.hashCode ^
+        creatorId.hashCode ^
+        questions.hashCode;
   }
 }
