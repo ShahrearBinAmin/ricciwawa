@@ -42,10 +42,8 @@ class Quiz {
     };
   }
 
-  Map<String, dynamic> toMapQuestions() {
-    return {
-      'questions': questions?.map((x) => x.toMap())?.toList(),
-    };
+  List<Map<String, dynamic>> toMapQuestions() {
+    return questions.map((x) => x.toMap()).toList();
   }
 
   factory Quiz.fromMap(Map<String, dynamic> map) {
@@ -58,10 +56,22 @@ class Quiz {
     );
   }
 
+  factory Quiz.fromMapRaw(Map<String, dynamic> map) {
+    return Quiz(
+      quizId: map['public_code'],
+      postId: map['public_code'],
+      creatorId: map['fuid'],
+      questions: List<Question>.from(
+          map['questions']?.map((x) => Question.fromMap(x))),
+    );
+  }
+
   String toJson() => json.encode(toMap());
   String toJsonQuestions() => json.encode(toMapQuestions());
 
   factory Quiz.fromJson(String source) => Quiz.fromMap(json.decode(source));
+  factory Quiz.fromJsonRaw(String source) =>
+      Quiz.fromMapRaw(json.decode(source));
 
   @override
   String toString() {

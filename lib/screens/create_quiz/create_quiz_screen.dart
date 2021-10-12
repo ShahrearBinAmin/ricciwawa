@@ -69,8 +69,8 @@ class _CreateQuizState extends State<CreateQuiz> {
 
                 Quiz _quiz = Quiz(
                     quizId: "aaa",
-                    postId: "bbbb",
-                    creatorId: "3333",
+                    postId: "ffft",
+                    creatorId: "999",
                     questions: _questions);
                 context.read<CreateQuizBloc>().add(PostCreateQuizEvent(_quiz));
               },

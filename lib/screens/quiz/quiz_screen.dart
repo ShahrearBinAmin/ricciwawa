@@ -34,7 +34,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    context.read<QuizInfoBloc>().add(GetQuizStat("1"));
+    context.read<QuizInfoBloc>().add(GetQuizInfo("1"));
+    print("Going to quiz screen");
 
     super.initState();
   }

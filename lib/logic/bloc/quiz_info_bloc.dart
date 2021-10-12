@@ -19,10 +19,12 @@ class QuizInfoBloc extends Bloc<QuizInfoEvent, QuizInfoState> {
   ) async* {
     if (event is GetQuizInfo) {
       yield QuizInfoLoading();
+      print("Quiz loading");
       final quizInfo = await _quizInfoRepository.fetchQuiz(event.quizId);
       yield QuizInfoLoaded(quiz: quizInfo, currentIndex: 0);
     } else if (event is GetQuizStat) {
       yield QuizInfoLoading();
+      // print("Quiz loading");
 
       final quizInfoStat =
           await _quizInfoRepository.fetchQuizWithStat(event.quizId);
