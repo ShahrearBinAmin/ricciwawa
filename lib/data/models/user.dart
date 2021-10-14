@@ -38,23 +38,23 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      'userId': userId,
+      'user_id': userId,
       'name': name,
       'email': email,
-      'userPhoto': userPhoto,
-      'profileBanner': profileBanner,
-      'userName': userName,
+      'user_photo': userPhoto,
+      'profile_banner': profileBanner,
+      'user_name': userName,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      userId: map['userId'],
+      userId: map['user_id'],
       name: map['name'],
       email: map['email'],
-      userPhoto: map['userPhoto'],
-      profileBanner: map['profileBanner'],
-      userName: map['userName'],
+      userPhoto: map['user_photo'],
+      profileBanner: map['profile_banner'],
+      userName: map['user_name'],
     );
   }
 

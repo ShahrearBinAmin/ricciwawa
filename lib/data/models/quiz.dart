@@ -35,9 +35,9 @@ class Quiz {
 
   Map<String, dynamic> toMap() {
     return {
-      'quizId': quizId,
-      'postId': postId,
-      'creatorId': creatorId,
+      'quiz_id': quizId,
+      'post_id': postId,
+      'creator_id': creatorId,
       'questions': questions?.map((x) => x.toMap())?.toList(),
     };
   }
@@ -48,9 +48,9 @@ class Quiz {
 
   factory Quiz.fromMap(Map<String, dynamic> map) {
     return Quiz(
-      quizId: map['quizId'],
-      postId: map['postId'],
-      creatorId: map['creatorId'],
+      quizId: map['quiz_id'],
+      postId: map['post_id'],
+      creatorId: map['creator_id'],
       questions: List<Question>.from(
           map['questions']?.map((x) => Question.fromMap(x))),
     );

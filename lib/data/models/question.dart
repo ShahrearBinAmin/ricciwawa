@@ -67,32 +67,32 @@ class Question {
 
   Map<String, dynamic> toMap() {
     return {
-      'questionId': questionId,
-      'questionText': questionText,
-      'correctOptionId': correctOptionId,
-      'correctOptionName': correctOptionName,
-      'selectedOptionName': selectedOptionName,
-      'explanation': explanation,
+      'question_id': questionId,
+      'question_text': questionText,
+      'correct_option_id': correctOptionId,
+      'correct_option_name': correctOptionName,
+      'selected_option_name': selectedOptionName,
+      'correct_option_explanation': explanation,
       'position': position,
-      'shuffleOption': shuffleOption,
-      'createTime': createTime,
+      'shuffle_option': shuffleOption,
+      'create_time': createTime,
       'options': options.map((x) => x.toMap()).toList(),
-      'isDefault': isDefault,
+      'is_default': isDefault,
     };
   }
 
   factory Question.fromMap(Map<String, dynamic> map) {
     return Question(
-      questionId: map['questionId'],
-      questionText: map['questionText'],
-      correctOptionId: map['correctOptionId'],
-      correctOptionName: map['correctOptionName'],
-      selectedOptionName: map['selectedOptionName'],
-      explanation: map['explanation'],
+      questionId: map['question_dd'],
+      questionText: map['question_text'],
+      correctOptionId: map['correct_option_id'],
+      correctOptionName: map['correct_option_name'],
+      selectedOptionName: map['selected_option_name'],
+      explanation: map['correct_option_explanation'],
       position: map['position'],
-      shuffleOption: map['shuffleOption'],
+      shuffleOption: map['shuffle_option'],
       options: List<Option>.from(map['options'].map((x) => Option.fromMap(x))),
-      isDefault: map['isDefault'],
+      isDefault: map['is_default'],
     );
   }
 
@@ -167,19 +167,19 @@ class OptionStat {
 
   Map<String, dynamic> toMap() {
     return {
-      'answeredUsers': answeredUsers?.map((x) => x.toMap())?.toList(),
+      'answered_ssers': answeredUsers?.map((x) => x.toMap())?.toList(),
       'percentage': percentage,
-      'answeredUsersCount': answeredUsersCount,
-      'createTime': createTime,
+      'answered_users_count': answeredUsersCount,
+      'create_time': createTime,
     };
   }
 
   factory OptionStat.fromMap(Map<String, dynamic> map) {
     return OptionStat(
       answeredUsers:
-          List<User>.from(map['answeredUsers']?.map((x) => User.fromMap(x))),
+          List<User>.from(map['answered_users']?.map((x) => User.fromMap(x))),
       percentage: map['percentage'],
-      answeredUsersCount: map['answeredUsersCount'],
+      answeredUsersCount: map['answered_users_count'],
     );
   }
 
@@ -212,22 +212,26 @@ class OptionStat {
 class Option {
   String optionId;
   String optionName;
+  int optionPosition;
   String optionText;
   OptionStat optionStat;
   Option(
       {required this.optionId,
       required this.optionName,
+      required this.optionPosition,
       required this.optionText,
       required this.optionStat});
 
   Option copyWith(
       {String? optionId,
       String? optionName,
+      int? optionPosition,
       String? optionText,
       OptionStat? optionStat}) {
     return Option(
       optionId: optionId ?? this.optionId,
       optionName: optionName ?? this.optionName,
+      optionPosition: optionPosition ?? this.optionPosition,
       optionText: optionText ?? this.optionText,
       optionStat: optionStat ?? this.optionStat.copyWith(),
     );
@@ -235,19 +239,21 @@ class Option {
 
   Map<String, dynamic> toMap() {
     return {
-      'optionId': optionId,
-      'optionName': optionName,
-      'optionText': optionText,
-      'optionStat': optionStat.toMap()
+      'option_id': optionId,
+      'option_name': optionName,
+      'option_position': optionPosition,
+      'option_text': optionText,
+      'option_stat': optionStat.toMap()
     };
   }
 
   factory Option.fromMap(Map<String, dynamic> map) {
     return Option(
-        optionId: map['optionId'],
-        optionName: map['optionName'],
-        optionText: map['optionText'],
-        optionStat: OptionStat.fromMap(map['optionStat']));
+        optionId: map['option_id'],
+        optionName: map['option_name'],
+        optionPosition: map['option_position'],
+        optionText: map['option_text'],
+        optionStat: OptionStat.fromMap(map['option_stat']));
   }
 
   String toJson() => json.encode(toMap());
@@ -270,5 +276,5 @@ class Option {
 
   @override
   String toString() =>
-      'Option(optionId: $optionId, optionName: $optionName, optionText: $optionText)';
+      'Option(optionId: $optionId, optionName: $optionName, optionText: $optionText, optionPosition: $optionPosition)';
 }

@@ -20,7 +20,7 @@ class CreateQuizBloc extends Bloc<CreateQuizEvent, CreateQuizState> {
   ) async* {
     if (event is PostCreateQuizEvent) {
       if (isAnyFieldEmpty(event.quiz)) {
-        print("You can't keep any filed empty");
+        print("You can't keep any field empty");
         yield CreateQuizEmptyField();
       } else if (isAnyCorrectUnselected(event.quiz)) {
         print("You must select correct option for each question");
@@ -28,7 +28,7 @@ class CreateQuizBloc extends Bloc<CreateQuizEvent, CreateQuizState> {
       } else {
         try {
           final response = await _quizInfoRepository
-              .postQuiz(mapOptionIdToOptionName(event.quiz));
+              .postQuiz(assignPosition(mapOptionIdToOptionName(event.quiz)));
           if (response.statusCode == 200) {
             yield CreateQuizCreated();
           } else {
@@ -51,8 +51,19 @@ class CreateQuizBloc extends Bloc<CreateQuizEvent, CreateQuizState> {
         }
       }
     }
-    print("Transformed quiz : ");
-    print(quiz);
+    return quiz;
+  }
+
+  Quiz assignPosition(Quiz quiz) {
+    for (int i = 0; i < quiz.questions.length; i++) {
+      var question = quiz.questions[i];
+      question.position = i;
+      for (int j = 0; j < question.options.length; j++) {
+        var option = question.options[j];
+        option.optionPosition = j;
+      }
+    }
+    print("Quiz after assigning position : ${quiz}");
     return quiz;
   }
 

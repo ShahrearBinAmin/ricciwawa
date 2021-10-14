@@ -29,6 +29,7 @@ Option generateOption(String name) {
   return Option(
       optionId: name,
       optionName: name,
+      optionPosition: 0,
       optionText: "",
       optionStat: generateOptionSate());
 }

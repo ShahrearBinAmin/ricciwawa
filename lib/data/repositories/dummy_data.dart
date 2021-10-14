@@ -53,6 +53,7 @@ Quiz quiz_with_stat =
               (index) => Option(
                   optionId: "$index",
                   optionName: convertIntToChar(index),
+                  optionPosition: index,
                   optionText: getTextBasedOnIndex(index),
                   optionStat: OptionStat(
                       percentage: 90,
@@ -114,6 +115,7 @@ List<UserAnswer> userAnswers = List.generate(
                               (index) => Option(
                                   optionId: "$index",
                                   optionName: convertIntToChar(index),
+                                  optionPosition: index,
                                   optionText: getTextBasedOnIndex(index),
                                   optionStat: OptionStat(
                                       percentage: 90,
